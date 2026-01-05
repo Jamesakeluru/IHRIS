@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+<h2>Add New Item</h2>
+<form method="post">
+    <input type="hidden" name="add_item" value="1">
+    <label>Item Name: <input type="text" name="item_name" required></label><br>
+    <label>Item Type: 
+        <select name="item_type" required>
+            <option value="Uniform">Uniform</option>
+            <option value="Radio">Radio</option>
+            <option value="Boots">Boots</option>
+            <option value="Other">Other</option>
+        </select>
+    </label><br>
+    <label>Serial Number: <input type="text" name="serial_number"></label><br>
+    <label>Condition: 
+        <select name="condition">
+            <option value="New">New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+            <option value="Poor">Poor</option>
+        </select>
+    </label><br>
+    <button type="submit">Add Item</button>
+</form>
+
+<h3>Assign Item to Employee</h3>
+<form method="post">
+    <input type="hidden" name="assign_item" value="1">
+    <label>Item: 
+        <select name="item_id" required>
+            {% for item in items %}
+            {% if not item.assigned_to %}
+            <option value="{{ item.id }}">{{ item.item_name }} ({{ item.serial_number }})</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Assign to Employee: 
+        <select name="assigned_to" required>
+            {% for emp in employees %}
+            <option value="{{ emp.id }}">{{ emp.employee_id }} - {{ emp.first_name }} {{ emp.last_name }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Date Assigned: <input type="date" name="date_assigned"></label><br>
+    <button type="submit">Assign Item</button>
+</form>
+
+<h3>Inventory Items</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Type</th>
+            <th>Serial Number</th>
+            <th>Assigned To</th>
+            <th>Date Assigned</th>
+            <th>Condition</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.item_type }}</td>
+            <td>{{ item.serial_number }}</td>
+            <td>{{ item.employee.employee_id if item.employee else 'Unassigned' }}</td>
+            <td>{{ item.date_assigned }}</td>
+            <td>{{ item.condition }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

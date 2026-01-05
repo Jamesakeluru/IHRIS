@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+<h2>Log Attendance</h2>
+<form method="post">
+    <label>Employee: 
+        <select name="employee_id" required>
+            {% for emp in employees %}
+            <option value="{{ emp.id }}">{{ emp.employee_id }} - {{ emp.first_name }} {{ emp.last_name }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Date: <input type="date" name="date" required></label><br>
+    <label>Check In: <input type="time" name="check_in"></label><br>
+    <label>Check Out: <input type="time" name="check_out"></label><br>
+    <label>Logged By: <input type="text" name="logged_by" required></label><br>
+    <button type="submit">Log Attendance</button>
+</form>
+
+<h3>Attendance Records</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Hours Worked</th>
+            <th>Logged By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rec in records %}
+        <tr>
+            <td>{{ rec.employee.employee_id if rec.employee else 'N/A' }}</td>
+            <td>{{ rec.date }}</td>
+            <td>{{ rec.check_in }}</td>
+            <td>{{ rec.check_out }}</td>
+            <td>{{ rec.hours_worked }}</td>
+            <td>{{ rec.logged_by }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

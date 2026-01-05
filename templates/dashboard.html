@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Dashboard</h2>
+<div class="cards">
+    <div class="card">
+        <h3>Total Employees</h3>
+        <p>{{ total_employees }}</p>
+    </div>
+    <div class="card">
+        <h3>Pending Leave Requests</h3>
+        <p>{{ pending_leaves }}</p>
+    </div>
+</div>
+{% endblock %}

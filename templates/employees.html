@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Employees{% endblock %}
+
+{% block content %}
+<h2>Employees</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ emp.employee_id }}</td>
+            <td>{{ emp.first_name }} {{ emp.last_name }}</td>
+            <td>{{ emp.department }}</td>
+            <td>{{ emp.position }}</td>
+            <td>{{ emp.status }}</td>
+            <td><a href="{{ url_for('employee_detail', id=emp.id) }}">View</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Add New Employee</h3>
+<form method="post">
+    <label>First Name: <input type="text" name="first_name" required></label><br>
+    <label>Last Name: <input type="text" name="last_name" required></label><br>
+    <label>Department: <input type="text" name="department"></label><br>
+    <label>Position: <input type="text" name="position"></label><br>
+    <label>Hire Date: <input type="date" name="hire_date"></label><br>
+    <label>Contact: <input type="text" name="contact"></label><br>
+    <label>Status: 
+        <select name="status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+    </label><br>
+    <button type="submit">Add Employee</button>
+</form>
+{% endblock %}

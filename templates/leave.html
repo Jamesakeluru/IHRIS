@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Leave Management{% endblock %}
+
+{% block content %}
+<h2>Submit Leave Request</h2>
+<form method="post">
+    <input type="hidden" name="submit_request" value="1">
+    <label>Employee: 
+        <select name="employee_id" required>
+            {% for emp in employees %}
+            <option value="{{ emp.id }}">{{ emp.employee_id }} - {{ emp.first_name }} {{ emp.last_name }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label>Leave Type: 
+        <select name="leave_type" required>
+            <option value="Annual">Annual</option>
+            <option value="Sick">Sick</option>
+            <option value="Emergency">Emergency</option>
+        </select>
+    </label><br>
+    <label>Start Date: <input type="date" name="start_date" required></label><br>
+    <label>End Date: <input type="date" name="end_date" required></label><br>
+    <label>Reason: <textarea name="reason"></textarea></label><br>
+    <button type="submit">Submit Request</button>
+</form>
+
+<h3>Leave Requests</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Applied On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.employee.employee_id if req.employee else 'N/A' }}</td>
+            <td>{{ req.leave_type }}</td>
+            <td>{{ req.start_date }}</td>
+            <td>{{ req.end_date }}</td>
+            <td>{{ req.reason }}</td>
+            <td>{{ req.status }}</td>
+            <td>{{ req.applied_on }}</td>
+            <td>
+                {% if req.status == 'Pending' %}
+                <form method="post" style="display:inline;">
+                    <input type="hidden" name="update_status" value="1">
+                    <input type="hidden" name="leave_id" value="{{ req.id }}">
+                    <select name="status">
+                        <option value="Approved">Approve</option>
+                        <option value="Rejected">Reject</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
